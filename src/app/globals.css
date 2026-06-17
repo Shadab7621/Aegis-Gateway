@@ -1,26 +1,198 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-base: #040812;
+  --color-cyan-accent: #00d4ff;
+  --color-threat-red: #ff2d5b;
+  --color-safe-green: #00ff88;
+  --color-warning-orange: #ffaa00;
+  --color-purple-accent: #9d4edd;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ═══ BASE ═══ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-base);
+    color: white;
+    font-family: var(--font-inter), sans-serif;
+    cursor: default; /* We use custom cursor glow, but keep default pointer for now, maybe hide it on non-interactive? No, instructions say just "Add a custom cursor glow effect", not hide default cursor */
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Font classes mapping */
+  .font-sans {
+    font-family: var(--font-inter), sans-serif;
+  }
+  .font-mono {
+    font-family: var(--font-jetbrains-mono), monospace;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ═══ UTILITIES ═══ */
+@layer utilities {
+  /* Liquid Glass Surfaces */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  }
+  .glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  /* Glow effects */
+  .glow-cyan {
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+  }
+  .glow-cyan-text {
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+  }
+  .glow-red {
+    box-shadow: 0 0 20px rgba(255, 45, 91, 0.4);
+  }
+
+  /* Parallax Background Layers */
+  .starfield-bg {
+    background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 100px 100px;
+    animation: slowPan 60s linear infinite;
+  }
+
+  .grid-overlay {
+    background-image: 
+      linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center center;
+    opacity: 0.04;
+    animation: drift 30s linear infinite;
+  }
+
+  .scanlines {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 212, 255, 0.03) 10%,
+      transparent 20%
+    );
+    background-size: 100% 200%;
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Hero radial gradient overlay */
+  .hero-gradient {
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 50%,
+      transparent 0%,
+      rgba(4, 8, 18, 0.4) 40%,
+      rgba(4, 8, 18, 0.85) 70%,
+      rgb(4, 8, 18) 100%
+    );
+  }
+
+  /* Custom scrollbar for inner panels */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 212, 255, 0.15);
+    border-radius: 2px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 212, 255, 0.3);
+  }
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes slowPan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100px); }
+}
+
+@keyframes drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
+}
+
+@keyframes scan {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 200%; }
+}
+
+@keyframes conicRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* High Risk rotating border */
+.high-risk-border-wrapper {
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.high-risk-border {
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(from 0deg, transparent 70%, rgba(255, 45, 91, 1) 100%);
+  animation: conicRotate 3s linear infinite;
+}
+
+/* Pulse animation for High Risk cards */
+.pulse-red {
+  animation: pulseRed 2s infinite;
+}
+
+@keyframes pulseRed {
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 45, 91, 0.1); }
+  50% { box-shadow: 0 0 30px rgba(255, 45, 91, 0.4); }
+}
+
+.glow-pulse-btn {
+  animation: glowPulseBtn 3s ease-in-out infinite;
+}
+
+@keyframes glowPulseBtn {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.15), 0 0 30px rgba(157, 78, 221, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.3), 0 0 50px rgba(157, 78, 221, 0.2);
+  }
 }
