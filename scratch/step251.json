@@ -1,0 +1,14 @@
+[
+  {
+    "name": "write_to_file",
+    "args": {
+      "CodeContent": "\"'use client';\\n\\nimport React, { useState, useEffect } from 'react';\\nimport { motion, AnimatePresence } from 'framer-motion';\\n\\ninterface HoneypotViewerProps {\\n  agentId: string;\\n  auditLogs: any[];\\n  toolCalls: any[];\\n  onClose: () => void;\\n  onBlockAgent: (agentId: string) => void;\\n}\\n\\nexport default function HoneypotViewer({ agentId, auditLogs, toolCalls, onClose, onBlockAgent }: HoneypotViewerProps) {\\n  const [activeTab, setActiveTab] = useState<'attacker' | 'reality' | 'comparison'>('attacker');\\n\\n  // All BLOCKED tool_calls for this agent (sorted oldest first)\\n  const blockedCalls = toolCalls\\n    .filter(c => \\n      (c.status === 'BLOCKED' || c.status === 'FAILED') &&\\n      (c.parameters?.agent_id === agentId || c.tool_name === agentId)\\n    )\\n    .sort((a, b) => \\n      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()\\n    );\\n\\n  // Honeypot interaction audit logs for this agent (sorted oldest first)\\n  const honeypotLogs = auditLogs\\n    .filter(l => \\n      l.severity_level === 'HONEYPOT' && \\n      l.payload_preview?.agent_id === agentId\\n    )\\n    .sort((a, b) => \\n      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()\\n    );\\n\\n  // Total interactions = honeypot logs + blocked calls (whichever has more)\\n  const totalInteractions = Math.max(honeypotLogs.length, blockedCalls.length);\\n\\n  // Time in honeypot: from first blocked call to now\\n  const firstBlockedTime = blockedCalls[0] \\n    ? new Date(blockedCalls[0].created_at).getTime() \\n    : Date.now();\\n  const [timeInTrap, setTimeInTrap] = useState(\\n    Math.floor((Date.now() - firstBlockedTime) / 1000)\\n  );\\n  useEffect(() => {\\n    const interval = setInterval(() => {\\n      setTimeInTrap(Math.floor((Date.now() - firstBlockedTime) / 1000));\\n    }, 1000);\\n    return () => clearInterval(interval);\\n  }, [firstBlockedTime]);\\n  const trapMinutes = Math.floor(timeInTrap / 60);\\n  const trapSeconds = timeInTrap % 60;\\n\\n  // 12-hour timestamp formatter\\n  const fmt = (dateStr: string) => n\n<truncated 10175 bytes>",
+      "Description": "\"Rewrite HoneypotViewer.tsx entirely using the new requirements.\"",
+      "IsArtifact": "false",
+      "Overwrite": "true",
+      "TargetFile": "\"c:\\\\Users\\\\laptop\\\\Desktop\\\\Projects\\\\AEGIS\\\\src\\\\components\\\\HoneypotViewer.tsx\"",
+      "toolAction": "\"Rewriting HoneypotViewer.tsx\"",
+      "toolSummary": "\"Rewriting HoneypotViewer.tsx\""
+    }
+  }
+]

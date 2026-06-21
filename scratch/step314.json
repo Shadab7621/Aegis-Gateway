@@ -1,0 +1,13 @@
+[
+  {
+    "name": "multi_replace_file_content",
+    "args": {
+      "Description": "\"Fix timer to start from 3rd call and use a ref, and fix footer overflow.\"",
+      "Instruction": "\"Apply FIX 1 and 2 to HoneypotViewer.tsx\"",
+      "ReplacementChunks": "[{\"AllowMultiple\":false,\"EndLine\":3,\"ReplacementContent\":\"import React, { useState, useEffect, useRef } from 'react';\\nimport { motion, AnimatePresence } from 'framer-motion';\",\"StartLine\":3,\"TargetContent\":\"import React, { useState, useEffect } from 'react';\\nimport { motion, AnimatePresence } from 'framer-motion';\"},{\"AllowMultiple\":false,\"EndLine\":48,\"ReplacementContent\":\"  // Honeypot activates after 2nd block, so time starts from 3rd call\\n  const honeypotEntryCall = blockedCalls[2] || blockedCalls[1] || blockedCalls[0];\\n  const firstBlockedTime = honeypotEntryCall\\n    ? new Date(honeypotEntryCall.created_at).getTime()\\n    : Date.now();\\n\\n  const startTimeRef = useRef(firstBlockedTime);\\n  \\n  const [timeInTrap, setTimeInTrap] = useState(\\n    Math.floor((Date.now() - startTimeRef.current) / 1000)\\n  );\\n  \\n  useEffect(() => {\\n    startTimeRef.current = firstBlockedTime;\\n    setTimeInTrap(Math.floor((Date.now() - firstBlockedTime) / 1000));\\n    const interval = setInterval(() => {\\n      setTimeInTrap(Math.floor((Date.now() - startTimeRef.current) / 1000));\\n    }, 1000);\\n    return () => clearInterval(interval);\\n  }, [firstBlockedTime]);\",\"StartLine\":39,\"TargetContent\":\"  // Time in honeypot: from first blocked call to now\\n  const firstBlockedTime = blockedCalls[0] \\n    ? new Date(blockedCalls[0].created_at).getTime() \\n    : Date.now();\\n  const [timeInTrap, setTimeInTrap] = useState(\\n    Math.floor((Date.now() - firstBlockedTime) / 1000)\\n  );\\n  useEffect(() => {\\n    const interval = setInterval(() => {\\n      setTimeInTrap(Math.floor((Date.now() - firstBlockedTime) / 1000));\\n    }, 1000);\\n    return () => clearInterval(interval);\\n  }, [firstBlockedTime]);\"},{\"AllowMultiple\":false,\"EndLine\":60,\"ReplacementContent\":\"      <motion.div\\n        initial={{ opacity: 0, scale: 0.95, y: 20 }}\\n        animate={{ opacity: 1, scale: 1, y: 0 }}\\n        exit={{ opacity: 0, scale: 0.95, y: 20 }}\\n        className=\\\"w-full max-w-3xl mx-4 min-w-0 glass-card border border-[#ffaa00]/30 shadow-2xl over\n<truncated 3704 bytes>",
+      "TargetFile": "\"c:\\\\Users\\\\laptop\\\\Desktop\\\\Projects\\\\AEGIS\\\\src\\\\components\\\\HoneypotViewer.tsx\"",
+      "toolAction": "\"Fixing HoneypotViewer.tsx bugs\"",
+      "toolSummary": "\"Fixing HoneypotViewer.tsx bugs\""
+    }
+  }
+]

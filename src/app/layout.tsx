@@ -15,8 +15,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aegis Gateway — AI Security Command Center",
-  description: "Enterprise-grade AI security proxy with real-time threat interception, deterministic risk scoring, and human-in-the-loop approval for every AI tool call.",
+  title: "Aegis Gateway — Zero-Trust AI Security Proxy",
+  description:
+    "Enterprise-grade AI security proxy with real-time threat interception, deterministic risk scoring, and human-in-the-loop approval for every AI tool call.",
 };
 
 export default function RootLayout({
@@ -29,7 +30,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col relative">
+      <body className="min-h-full flex flex-col relative" style={{ backgroundColor: '#06060F' }}>
         <CustomCursor />
         <SupabaseProvider>
           {children}

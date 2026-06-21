@@ -1,35 +1,63 @@
 @import "tailwindcss";
 
 @theme {
+  /* OLD DASHBOARD THEME */
   --color-base: #040812;
   --color-cyan-accent: #00d4ff;
   --color-threat-red: #ff2d5b;
   --color-safe-green: #00ff88;
   --color-warning-orange: #ffaa00;
   --color-purple-accent: #9d4edd;
+
+  /* NEW LANDING PAGE THEME */
+  --color-bg-deep: #06060F;
+  --color-bg-mid: #0D0D1A;
+  --color-surface-glass: rgba(255,255,255,0.06);
+  --color-surface-glass-hover: rgba(255,255,255,0.10);
+  --color-border-subtle: rgba(255,255,255,0.08);
+  --color-border-hover: rgba(255,255,255,0.16);
+  --color-primary: #7B6EFF;
+  --color-secondary: #3ECFCF;
+  --color-text-primary: #F0F0FA;
+  --color-text-secondary: #9090A8;
+  --color-text-muted: #555568;
+  --color-danger: #FF4D6A;
+  --color-warning: #FFB347;
+  --color-success: #34D399;
+
+  /* Display font alias — reuses Inter (already loaded via next/font in layout.tsx)
+     instead of pulling in a new Google Font like Space Grotesk, to avoid adding
+     a network font dependency. Ported components reference `font-display` for
+     headings; this keeps them rendering with the existing Inter variable. */
+  --font-display: var(--font-inter), sans-serif;
 }
 
-/* ═══ BASE ═══ */
 @layer base {
   html {
     scroll-behavior: smooth;
   }
   body {
-    background-color: var(--color-base);
-    color: white;
+    /* Using new background as default, but dashboard has its own fixed bg classes */
+    background-color: #06060F;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(123,110,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(62,207,207,0.06) 0%, transparent 60%),
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 28px 28px;
+    color: #F0F0FA;
     font-family: var(--font-inter), sans-serif;
-    cursor: default; /* We use custom cursor glow, but keep default pointer for now, maybe hide it on non-interactive? No, instructions say just "Add a custom cursor glow effect", not hide default cursor */
   }
 
-  /* Font classes mapping */
   .font-sans {
     font-family: var(--font-inter), sans-serif;
   }
   .font-mono {
     font-family: var(--font-jetbrains-mono), monospace;
   }
+  .font-display {
+    font-family: var(--font-inter), sans-serif;
+  }
 
-  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 4px;
     height: 4px;
@@ -38,17 +66,16 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
   }
 }
 
-/* ═══ UTILITIES ═══ */
 @layer utilities {
-  /* Liquid Glass Surfaces */
+  /* ═══ OLD DASHBOARD CLASSES ═══ */
   .glass-panel {
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px) saturate(180%);
@@ -70,7 +97,6 @@
     background: rgba(255, 255, 255, 0.04);
   }
 
-  /* Glow effects */
   .glow-cyan {
     box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
   }
@@ -81,7 +107,6 @@
     box-shadow: 0 0 20px rgba(255, 45, 91, 0.4);
   }
 
-  /* Parallax Background Layers */
   .starfield-bg {
     background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
     background-size: 100px 100px;
@@ -110,7 +135,6 @@
     pointer-events: none;
   }
 
-  /* Hero radial gradient overlay */
   .hero-gradient {
     background: radial-gradient(
       ellipse 80% 60% at 50% 50%,
@@ -121,7 +145,114 @@
     );
   }
 
-  /* Custom scrollbar for inner panels */
+  .high-risk-border-wrapper {
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .high-risk-border {
+    position: absolute;
+    inset: -50%;
+    background: conic-gradient(from 0deg, transparent 70%, rgba(255, 45, 91, 1) 100%);
+    animation: conicRotate 3s linear infinite;
+  }
+
+  .pulse-red {
+    animation: pulseRed 2s infinite;
+  }
+
+  .glow-pulse-btn {
+    animation: glowPulseBtn 3s ease-in-out infinite;
+  }
+
+
+  /* ═══ NEW LANDING PAGE / DASHBOARD CLASSES ═══ */
+  .glass {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+      0 0 0 0.5px rgba(255,255,255,0.05) inset,
+      0 1px 0 rgba(255,255,255,0.10) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset,
+      0 8px 32px rgba(0,0,0,0.4),
+      0 2px 8px rgba(0,0,0,0.3);
+    border-radius: 20px;
+  }
+
+  /* Stronger glass variant — used for modals (HoneypotModal) and the
+     landing page "stack/flow diagram" hero panel. Slightly higher opacity
+     and blur than .glass so it reads as a foreground/elevated surface. */
+  .glass-strong {
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(48px) saturate(200%);
+    -webkit-backdrop-filter: blur(48px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow:
+      0 0 0 0.5px rgba(255,255,255,0.08) inset,
+      0 1px 0 rgba(255,255,255,0.16) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset,
+      0 24px 64px rgba(0,0,0,0.5),
+      0 4px 16px rgba(0,0,0,0.4);
+    border-radius: 20px;
+  }
+
+  .glass-danger {
+    background: rgba(255,77,106,0.06);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255,77,106,0.15);
+    box-shadow:
+      0 0 0 0.5px rgba(255,77,106,0.1) inset,
+      0 1px 0 rgba(255,77,106,0.08) inset,
+      0 8px 32px rgba(0,0,0,0.4);
+    border-radius: 20px;
+  }
+
+  .pill-safe {
+    background: rgba(52,211,153,0.12);
+    color: #34D399;
+    border: 1px solid rgba(52,211,153,0.25);
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .pill-flagged {
+    background: rgba(255,179,71,0.12);
+    color: #FFB347;
+    border: 1px solid rgba(255,179,71,0.25);
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .pill-blocked {
+    background: rgba(255,77,106,0.12);
+    color: #FF4D6A;
+    border: 1px solid rgba(255,77,106,0.25);
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #7B6EFF, #3ECFCF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
   }
@@ -129,11 +260,11 @@
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(0, 212, 255, 0.15);
+    background: rgba(123,110,255,0.15);
     border-radius: 2px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 212, 255, 0.3);
+    background: rgba(123,110,255,0.3);
   }
 }
 
@@ -158,34 +289,9 @@
   to { transform: rotate(360deg); }
 }
 
-/* High Risk rotating border */
-.high-risk-border-wrapper {
-  position: absolute;
-  inset: -2px;
-  z-index: -1;
-  border-radius: 18px;
-  overflow: hidden;
-}
-
-.high-risk-border {
-  position: absolute;
-  inset: -50%;
-  background: conic-gradient(from 0deg, transparent 70%, rgba(255, 45, 91, 1) 100%);
-  animation: conicRotate 3s linear infinite;
-}
-
-/* Pulse animation for High Risk cards */
-.pulse-red {
-  animation: pulseRed 2s infinite;
-}
-
 @keyframes pulseRed {
   0%, 100% { box-shadow: 0 0 15px rgba(255, 45, 91, 0.1); }
   50% { box-shadow: 0 0 30px rgba(255, 45, 91, 0.4); }
-}
-
-.glow-pulse-btn {
-  animation: glowPulseBtn 3s ease-in-out infinite;
 }
 
 @keyframes glowPulseBtn {
@@ -195,4 +301,20 @@
   50% {
     box-shadow: 0 0 25px rgba(0, 212, 255, 0.3), 0 0 50px rgba(157, 78, 221, 0.2);
   }
+}
+
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-rotate {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+.animate-border {
+  animation: border-rotate 4s linear infinite;
 }
