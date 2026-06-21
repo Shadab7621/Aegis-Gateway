@@ -606,13 +606,48 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
     req.on('end', async () => {
       try {
         const { tool_call_id, resolution } = JSON.parse(body);
+
+        // FIX: previously this endpoint never persisted the resolution to the database —
+        // it only released the held HTTP response and wrote an audit log entry. The actual
+        // status update was attempted client-side from the dashboard using the anon-role
+        // Supabase client, which RLS silently blocks ("Deny anon access" policy on both
+        // tool_calls and approval_requests). A blocked RLS update affects 0 rows without
+        // throwing an error, so the UI looked like it worked (optimistic update) but the
+        // database row never actually changed — causing denied/approved items to reappear
+        // in the queue on reload. The proxy runs as service_role and bypasses RLS, so this
+        // is where the real, durable write must happen.
+        const newToolCallStatus = resolution === 'approved' ? 'COMPLETED' : 'BLOCKED';
+        const newApprovalStatus = resolution === 'approved' ? 'APPROVED' : 'REJECTED';
+
+        const { error: approvalUpdateError } = await supabase
+          .from('approval_requests')
+          .update({
+            status: newApprovalStatus,
+            resolved_by: 'SecOps',
+            resolution_timestamp: new Date().toISOString(),
+          })
+          .eq('tool_call_id', tool_call_id);
+
+        if (approvalUpdateError) {
+          console.error('Failed to update approval_requests:', approvalUpdateError);
+        }
+
+        const { error: toolCallUpdateError } = await supabase
+          .from('tool_calls')
+          .update({ status: newToolCallStatus })
+          .eq('id', tool_call_id);
+
+        if (toolCallUpdateError) {
+          console.error('Failed to update tool_calls:', toolCallUpdateError);
+        }
+
         const pending = pendingRequestsBuffer.findAndRemove(item => item.id === tool_call_id);
         if (pending) {
           pending.res.writeHead(200, { 'Content-Type': 'application/json' });
           pending.res.end(JSON.stringify({
             status: 'resolved',
             action: resolution,
-            risk_status: resolution === 'approved' ? 'COMPLETED' : 'BLOCKED',
+            risk_status: newToolCallStatus,
             tool_call_id,
             payload: pending.reqBody
           }));
