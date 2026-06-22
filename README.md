@@ -292,7 +292,7 @@ Requires `X-Resolve-Token: your-secret` header.
 
 Built for hackathon submission — June 26, 2026.
 
-**Shadab Khan** — Full-stack development, security architecture, AI integration
+**Matrix** — Full-stack development, security architecture, AI integration
 
 ---
 
