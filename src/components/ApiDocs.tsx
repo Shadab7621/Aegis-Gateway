@@ -1,5 +1,7 @@
 import { GlassPanel, Pill } from './GlassPanel';
 
+const PROXY_URL = process.env.NEXT_PUBLIC_PROXY_SERVER_URL || 'http://localhost:3001';
+
 const ENDPOINTS = [
   {
     method: 'POST',
@@ -14,6 +16,9 @@ const ENDPOINTS = [
 {
   "status": "success",
   "action": "executed",
+  "risk_status": "FLAGGED",
+  "risk_score": 0.65,
+  "threat_reason": "File Read Attempt",
   "payload": { ... }
 }
 
@@ -32,6 +37,7 @@ const ENDPOINTS = [
     response: `{
   "status": "resolved",
   "action": "approved",
+  "risk_status": "COMPLETED",
   "payload": { ... }
 }`,
   },
@@ -41,10 +47,11 @@ export function ApiDocs() {
   return (
     <div className="space-y-6">
       <GlassPanel className="p-5">
-        <h3 className="font-display text-lg font-semibold text-white">Drop-in proxy</h3>
+        <h3 className="font-display text-lg font-semibold" style={{ color: '#F0F0FA' }}>Drop-in proxy</h3>
         <p className="mt-1 text-sm text-white/60">
-          Point your agent runtime at <code className="font-mono text-[#3ECFCF]">http://localhost:3001/rpc</code> instead
-          of executing tool calls directly. Zero SDK changes. Every call is logged, scored, and policy-gated.
+          Point your agent runtime at{' '}
+          <code className="font-mono text-[#3ECFCF] break-all">{PROXY_URL}/rpc</code>{' '}
+          instead of executing tool calls directly. Zero SDK changes. Every call is logged, scored, and policy-gated.
         </p>
       </GlassPanel>
 
@@ -59,7 +66,7 @@ export function ApiDocs() {
         <GlassPanel key={e.path} className="overflow-hidden p-0">
           <div className="flex items-center gap-3 border-b border-white/10 px-5 py-3">
             <Pill tone={e.method === 'POST' ? 'violet' : 'cyan'}>{e.method}</Pill>
-            <code className="font-mono text-base text-white">{e.path}</code>
+            <code className="font-mono text-base" style={{ color: '#F0F0FA' }}>{PROXY_URL}{e.path}</code>
             <span className="ml-auto text-xs text-white/40 hidden sm:block">{e.desc}</span>
           </div>
           <div className="grid grid-cols-1 gap-px bg-white/5 md:grid-cols-2">
@@ -70,7 +77,7 @@ export function ApiDocs() {
       ))}
 
       <GlassPanel className="p-6">
-        <h3 className="font-display text-base font-semibold text-white mb-4 flex items-center gap-2">
+        <h3 className="font-display text-base font-semibold mb-4 flex items-center gap-2" style={{ color: '#F0F0FA' }}>
           <span className="h-2 w-2 rounded-full bg-[#7B6EFF]" />
           Risk scoring reference
         </h3>
@@ -97,7 +104,7 @@ function Block({ title, code }: { title: string; code: string }) {
   return (
     <div className="bg-black/60 p-5">
       <div className="text-[10px] uppercase tracking-[0.18em] text-white/40">{title}</div>
-      <pre className="mt-2 overflow-x-auto rounded-lg border border-white/10 bg-black/40 p-3 font-mono text-[12px] leading-relaxed text-white/85">
+      <pre className="mt-2 overflow-x-auto rounded-lg border border-white/10 bg-black/40 p-3 font-mono text-[12px] leading-relaxed text-white/85 whitespace-pre-wrap break-words">
         {code}
       </pre>
     </div>
