@@ -268,7 +268,7 @@ export default function LandingPage({ onEnterDashboard }: { onEnterDashboard: ()
 
           <div className="relative hidden lg:block">
             <GlassPanel className="p-5 relative">
-              <div className="absolute -top-3 right-4 flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold" style={{ borderColor: 'var(--tone-emerald-border)', backgroundColor: 'var(--tone-emerald-bg)', color: 'var(--tone-emerald)' }}>
+              <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-extrabold tracking-wider" style={{ borderColor: 'var(--tone-emerald)', backgroundColor: 'var(--aegis-bg)', color: 'var(--tone-emerald)' }}>
                 <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: 'var(--tone-emerald)' }} /> LIVE
               </div>
               <div className="font-mono text-xs space-y-2">
