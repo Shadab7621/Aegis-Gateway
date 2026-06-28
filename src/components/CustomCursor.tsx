@@ -1,11 +1,16 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useTheme } from '@/lib/themeContext';
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
+  const { isDark } = useTheme();
 
   useEffect(() => {
+    // Hide on touch devices
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     let cursorX = mouseX;
@@ -46,7 +51,7 @@ export default function CustomCursor() {
         width: '400px',
         height: '400px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(123,110,255,0.06) 0%, transparent 70%)',
+        background: `radial-gradient(circle, var(--aegis-cursor-glow) 0%, transparent 70%)`,
         willChange: 'transform',
       }}
     />

@@ -57,7 +57,8 @@ float random(vec2 st){return fract(sin(dot(st.xy,vec2(12.9898,78.233)))*43758.54
 void main(){
   float distort=2.0*vDisplacement*u_intensity*sin(vUv.y*10.0+u_time);
   vec3 color=mix(u_color,vec3(1.0,1.0,1.0),distort);
-  float noise=random(gl_FragCoord.xy*u_time*0.05)*0.05;
+  // Using static noise instead of time-based to prevent high-frequency flashing
+  float noise=random(gl_FragCoord.xy)*0.05;
   color+=noise;
   gl_FragColor=vec4(color,1.0);
 }`;
@@ -71,7 +72,7 @@ function Blob() {
   useFrame((state) => {
     if(mesh.current){
       const mat=mesh.current.material as THREE.ShaderMaterial;
-      mat.uniforms.u_time.value=0.4*state.clock.getElapsedTime();
+      mat.uniforms.u_time.value=0.15*state.clock.getElapsedTime(); // Slower movement
       mat.uniforms.u_intensity.value=MathUtils.lerp(mat.uniforms.u_intensity.value,hover.current?0.7:1,0.02);
       targetPos.current.set(state.mouse.x*0.3,state.mouse.y*0.3,0);
       currentPos.current.lerp(targetPos.current,0.1);

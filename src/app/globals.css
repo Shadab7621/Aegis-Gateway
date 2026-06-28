@@ -1,5 +1,242 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════
+   AEGIS GATEWAY — THEME SYSTEM
+   Dark mode: exact current Aegis aesthetic (unchanged)
+   Light mode: iOS 26 Liquid Glass (from Stitch mockup)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── DARK THEME (default) ─── */
+:root,
+[data-theme="dark"] {
+  /* Semantic colors */
+  --aegis-bg: #06060F;
+  --aegis-surface: rgba(255,255,255,0.06);
+  --aegis-surface-strong: rgba(255,255,255,0.10);
+  --aegis-surface-hover: rgba(255,255,255,0.04);
+  --aegis-border: rgba(255,255,255,0.08);
+  --aegis-border-hover: rgba(255,255,255,0.16);
+  --aegis-text: #F0F0FA;
+  --aegis-text-secondary: #9090A8;
+  --aegis-text-muted: rgba(255,255,255,0.40);
+  --aegis-text-dim: rgba(255,255,255,0.20);
+  --aegis-primary: #7B6EFF;
+  --aegis-secondary: #3ECFCF;
+  --aegis-danger: #FF4D6A;
+  --aegis-warning: #FFB347;
+  --aegis-success: #34D399;
+
+  /* Header / nav */
+  --aegis-header-bg: rgba(6,6,15,0.92);
+  --aegis-header-border: rgba(255,255,255,0.05);
+  --aegis-logo-text: #06060F;
+
+  /* Glass surfaces */
+  --glass-bg: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.08);
+  --glass-shadow:
+    0 0 0 0.5px rgba(255,255,255,0.05) inset,
+    0 1px 0 rgba(255,255,255,0.10) inset,
+    0 -1px 0 rgba(0,0,0,0.3) inset,
+    0 8px 32px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.3);
+  --glass-blur: blur(40px) saturate(180%);
+
+  --glass-strong-bg: rgba(255,255,255,0.10);
+  --glass-strong-border: rgba(255,255,255,0.14);
+  --glass-strong-shadow:
+    0 0 0 0.5px rgba(255,255,255,0.08) inset,
+    0 1px 0 rgba(255,255,255,0.16) inset,
+    0 -1px 0 rgba(0,0,0,0.3) inset,
+    0 24px 64px rgba(0,0,0,0.5),
+    0 4px 16px rgba(0,0,0,0.4);
+  --glass-strong-blur: blur(48px) saturate(200%);
+
+  --glass-danger-bg: rgba(255,77,106,0.06);
+  --glass-danger-border: rgba(255,77,106,0.15);
+  --glass-danger-shadow:
+    0 0 0 0.5px rgba(255,77,106,0.1) inset,
+    0 1px 0 rgba(255,77,106,0.08) inset,
+    0 8px 32px rgba(0,0,0,0.4);
+
+  /* Tone accents (used by Pill, StatCard, etc.) */
+  --tone-cyan: #3ECFCF;
+  --tone-cyan-bg: rgba(62,207,207,0.15);
+  --tone-cyan-border: rgba(62,207,207,0.30);
+  --tone-violet: #7B6EFF;
+  --tone-violet-bg: rgba(123,110,255,0.15);
+  --tone-violet-border: rgba(123,110,255,0.30);
+  --tone-emerald: #34D399;
+  --tone-emerald-bg: rgba(52,211,153,0.15);
+  --tone-emerald-border: rgba(52,211,153,0.30);
+  --tone-amber: #FFB347;
+  --tone-amber-bg: rgba(255,179,71,0.15);
+  --tone-amber-border: rgba(255,179,71,0.30);
+  --tone-rose: #FF4D6A;
+  --tone-rose-bg: rgba(255,77,106,0.15);
+  --tone-rose-border: rgba(255,77,106,0.30);
+  --tone-muted: rgba(255,255,255,0.60);
+  --tone-muted-bg: rgba(255,255,255,0.05);
+  --tone-muted-border: rgba(255,255,255,0.10);
+
+  /* Gradients */
+  --aegis-text-gradient: linear-gradient(135deg, #7B6EFF, #3ECFCF);
+  --aegis-gradient-primary: linear-gradient(135deg, #3ECFCF, #7B6EFF);
+  --aegis-gradient-cta: linear-gradient(90deg, #3ECFCF, #7B6EFF);
+  --aegis-gradient-cta-shadow: rgba(62,207,207,0.5);
+  --aegis-tab-underline: linear-gradient(90deg, #3ECFCF, #7B6EFF);
+
+  /* Cursor */
+  --aegis-cursor-glow: rgba(123,110,255,0.06);
+
+  /* Body background */
+  --aegis-body-bg-image:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(123,110,255,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(62,207,207,0.06) 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.015) 1px, transparent 1px);
+  --aegis-body-bg-size: 100% 100%, 100% 100%, 28px 28px;
+
+  /* Misc */
+  --aegis-row-hover: rgba(255,255,255,0.03);
+  --aegis-code-bg: rgba(0,0,0,0.30);
+  --aegis-code-border: rgba(255,255,255,0.10);
+  --scrollbar-thumb: rgba(255,255,255,0.08);
+  --scrollbar-thumb-hover: rgba(255,255,255,0.15);
+  --scrollbar-accent-thumb: rgba(123,110,255,0.15);
+  --scrollbar-accent-thumb-hover: rgba(123,110,255,0.3);
+
+  /* Pills (legacy standalone classes) */
+  --pill-safe-bg: rgba(52,211,153,0.12);
+  --pill-safe-color: #34D399;
+  --pill-safe-border: rgba(52,211,153,0.25);
+  --pill-flagged-bg: rgba(255,179,71,0.12);
+  --pill-flagged-color: #FFB347;
+  --pill-flagged-border: rgba(255,179,71,0.25);
+  --pill-blocked-bg: rgba(255,77,106,0.12);
+  --pill-blocked-color: #FF4D6A;
+  --pill-blocked-border: rgba(255,77,106,0.25);
+
+  /* Risk colors */
+  --risk-high: #FF4D6A;
+  --risk-mid: #FFB347;
+  --risk-low: #34D399;
+  --risk-bar-track: rgba(255,255,255,0.10);
+}
+
+/* ─── LIGHT THEME (iOS 26 Liquid Glass) ─── */
+[data-theme="light"] {
+  /* Semantic colors */
+  --aegis-bg: #F0F4FF;
+  --aegis-surface: rgba(255,255,255,0.85);
+  --aegis-surface-strong: rgba(255,255,255,0.92);
+  --aegis-surface-hover: rgba(255,255,255,0.95);
+  --aegis-border: rgba(15,23,42,0.10);
+  --aegis-border-hover: rgba(15,23,42,0.20);
+  --aegis-text: #0F172A;
+  --aegis-text-secondary: #475569;
+  --aegis-text-muted: #64748B;
+  --aegis-text-dim: #94A3B8;
+  --aegis-primary: #4F46E5;
+  --aegis-secondary: #059669;
+  --aegis-danger: #DC2626;
+  --aegis-warning: #D97706;
+  --aegis-success: #059669;
+
+  /* Header / nav */
+  --aegis-header-bg: rgba(240,244,255,0.82);
+  --aegis-header-border: rgba(15,23,42,0.06);
+  --aegis-logo-text: #FFFFFF;
+
+  /* Glass — iOS 26 Liquid Glass: frosted white acrylic with real depth */
+  --glass-bg: rgba(255,255,255,0.72);
+  --glass-border: rgba(255,255,255,0.6);
+  --glass-shadow:
+    0 2px 0 rgba(255,255,255,0.8) inset,
+    0 8px 32px rgba(0,0,0,0.08),
+    0 1px 2px rgba(0,0,0,0.06);
+  --glass-blur: blur(40px) saturate(200%);
+
+  --glass-strong-bg: rgba(255,255,255,0.82);
+  --glass-strong-border: rgba(255,255,255,0.7);
+  --glass-strong-shadow:
+    0 2px 0 rgba(255,255,255,0.9) inset,
+    0 24px 64px rgba(0,0,0,0.08),
+    0 4px 16px rgba(0,0,0,0.05);
+  --glass-strong-blur: blur(48px) saturate(200%);
+
+  --glass-danger-bg: rgba(220,38,38,0.05);
+  --glass-danger-border: rgba(220,38,38,0.15);
+  --glass-danger-shadow:
+    0 2px 0 rgba(255,255,255,0.6) inset,
+    0 8px 32px rgba(220,38,38,0.06);
+
+  /* Tone accents — darker for legibility on white */
+  --tone-cyan: #0891B2;
+  --tone-cyan-bg: rgba(8,145,178,0.10);
+  --tone-cyan-border: rgba(8,145,178,0.20);
+  --tone-violet: #4F46E5;
+  --tone-violet-bg: rgba(79,70,229,0.10);
+  --tone-violet-border: rgba(79,70,229,0.20);
+  --tone-emerald: #059669;
+  --tone-emerald-bg: rgba(5,150,105,0.10);
+  --tone-emerald-border: rgba(5,150,105,0.20);
+  --tone-amber: #D97706;
+  --tone-amber-bg: rgba(217,119,6,0.10);
+  --tone-amber-border: rgba(217,119,6,0.20);
+  --tone-rose: #DC2626;
+  --tone-rose-bg: rgba(220,38,38,0.10);
+  --tone-rose-border: rgba(220,38,38,0.20);
+  --tone-muted: #64748B;
+  --tone-muted-bg: rgba(15,23,42,0.04);
+  --tone-muted-border: rgba(15,23,42,0.08);
+
+  /* Gradients */
+  --aegis-text-gradient: linear-gradient(135deg, #4F46E5, #059669);
+  --aegis-gradient-primary: linear-gradient(135deg, #4F46E5, #059669);
+  --aegis-gradient-cta: linear-gradient(90deg, #4F46E5, #6366F1);
+  --aegis-gradient-cta-shadow: rgba(79,70,229,0.35);
+  --aegis-tab-underline: linear-gradient(90deg, #4F46E5, #059669);
+
+  /* Cursor */
+  --aegis-cursor-glow: rgba(79,70,229,0.03);
+
+  /* Body background */
+  --aegis-body-bg-image:
+    radial-gradient(ellipse 80% 50% at 30% 0%, rgba(79,70,229,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 70% 100%, rgba(5,150,105,0.04) 0%, transparent 60%);
+  --aegis-body-bg-size: 100% 100%, 100% 100%;
+
+  /* Misc */
+  --aegis-row-hover: rgba(15,23,42,0.03);
+  --aegis-code-bg: rgba(15,23,42,0.04);
+  --aegis-code-border: rgba(15,23,42,0.08);
+  --scrollbar-thumb: rgba(0,0,0,0.10);
+  --scrollbar-thumb-hover: rgba(0,0,0,0.18);
+  --scrollbar-accent-thumb: rgba(79,70,229,0.12);
+  --scrollbar-accent-thumb-hover: rgba(79,70,229,0.25);
+
+  /* Pills (legacy standalone classes) */
+  --pill-safe-bg: rgba(5,150,105,0.10);
+  --pill-safe-color: #059669;
+  --pill-safe-border: rgba(5,150,105,0.20);
+  --pill-flagged-bg: rgba(217,119,6,0.10);
+  --pill-flagged-color: #D97706;
+  --pill-flagged-border: rgba(217,119,6,0.20);
+  --pill-blocked-bg: rgba(220,38,38,0.10);
+  --pill-blocked-color: #DC2626;
+  --pill-blocked-border: rgba(220,38,38,0.20);
+
+  /* Risk colors */
+  --risk-high: #DC2626;
+  --risk-mid: #D97706;
+  --risk-low: #059669;
+  --risk-bar-track: rgba(0,0,0,0.06);
+}
+
+/* ═══════════════════════════════════════════════
+   TAILWIND THEME TOKENS (build-time, kept for
+   any existing Tailwind utility class references)
+   ═══════════════════════════════════════════════ */
 @theme {
   /* OLD DASHBOARD THEME */
   --color-base: #040812;
@@ -32,19 +269,18 @@
   --font-display: var(--font-inter), sans-serif;
 }
 
+/* ═══════════════════════════════════════════════
+   BASE LAYER
+   ═══════════════════════════════════════════════ */
 @layer base {
   html {
     scroll-behavior: smooth;
   }
   body {
-    /* Using new background as default, but dashboard has its own fixed bg classes */
-    background-color: #06060F;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(123,110,255,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(62,207,207,0.06) 0%, transparent 60%),
-      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 28px 28px;
-    color: #F0F0FA;
+    background-color: var(--aegis-bg);
+    background-image: var(--aegis-body-bg-image);
+    background-size: var(--aegis-body-bg-size);
+    color: var(--aegis-text);
     font-family: var(--font-inter), sans-serif;
   }
 
@@ -66,35 +302,41 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--scrollbar-thumb);
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--scrollbar-thumb-hover);
   }
 }
 
+/* ═══════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════ */
 @layer utilities {
-  /* ═══ OLD DASHBOARD CLASSES ═══ */
+
+  /* ═══ OLD DASHBOARD CLASSES (preserved, now theme-aware) ═══ */
   .glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     border-radius: 16px;
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     border-radius: 16px;
     transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
   }
   .glass-card:hover {
-    border-color: rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--aegis-border-hover);
+    background: var(--aegis-surface-hover);
   }
 
   .glow-cyan {
@@ -114,7 +356,7 @@
   }
 
   .grid-overlay {
-    background-image: 
+    background-image:
       linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
     background-size: 40px 40px;
@@ -169,54 +411,39 @@
   }
 
 
-  /* ═══ NEW LANDING PAGE / DASHBOARD CLASSES ═══ */
+  /* ═══ GLASS SURFACES (theme-aware) ═══ */
   .glass {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow:
-      0 0 0 0.5px rgba(255,255,255,0.05) inset,
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 -1px 0 rgba(0,0,0,0.3) inset,
-      0 8px 32px rgba(0,0,0,0.4),
-      0 2px 8px rgba(0,0,0,0.3);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     border-radius: 20px;
   }
 
-  /* Stronger glass variant — used for modals (HoneypotModal) and the
-     landing page "stack/flow diagram" hero panel. Slightly higher opacity
-     and blur than .glass so it reads as a foreground/elevated surface. */
   .glass-strong {
-    background: rgba(255,255,255,0.10);
-    backdrop-filter: blur(48px) saturate(200%);
-    -webkit-backdrop-filter: blur(48px) saturate(200%);
-    border: 1px solid rgba(255,255,255,0.14);
-    box-shadow:
-      0 0 0 0.5px rgba(255,255,255,0.08) inset,
-      0 1px 0 rgba(255,255,255,0.16) inset,
-      0 -1px 0 rgba(0,0,0,0.3) inset,
-      0 24px 64px rgba(0,0,0,0.5),
-      0 4px 16px rgba(0,0,0,0.4);
+    background: var(--glass-strong-bg);
+    backdrop-filter: var(--glass-strong-blur);
+    -webkit-backdrop-filter: var(--glass-strong-blur);
+    border: 1px solid var(--glass-strong-border);
+    box-shadow: var(--glass-strong-shadow);
     border-radius: 20px;
   }
 
   .glass-danger {
-    background: rgba(255,77,106,0.06);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(255,77,106,0.15);
-    box-shadow:
-      0 0 0 0.5px rgba(255,77,106,0.1) inset,
-      0 1px 0 rgba(255,77,106,0.08) inset,
-      0 8px 32px rgba(0,0,0,0.4);
+    background: var(--glass-danger-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-danger-border);
+    box-shadow: var(--glass-danger-shadow);
     border-radius: 20px;
   }
 
+  /* ═══ PILL STATUS BADGES ═══ */
   .pill-safe {
-    background: rgba(52,211,153,0.12);
-    color: #34D399;
-    border: 1px solid rgba(52,211,153,0.25);
+    background: var(--pill-safe-bg);
+    color: var(--pill-safe-color);
+    border: 1px solid var(--pill-safe-border);
     padding: 2px 10px;
     border-radius: 9999px;
     font-size: 10px;
@@ -225,9 +452,9 @@
   }
 
   .pill-flagged {
-    background: rgba(255,179,71,0.12);
-    color: #FFB347;
-    border: 1px solid rgba(255,179,71,0.25);
+    background: var(--pill-flagged-bg);
+    color: var(--pill-flagged-color);
+    border: 1px solid var(--pill-flagged-border);
     padding: 2px 10px;
     border-radius: 9999px;
     font-size: 10px;
@@ -236,9 +463,9 @@
   }
 
   .pill-blocked {
-    background: rgba(255,77,106,0.12);
-    color: #FF4D6A;
-    border: 1px solid rgba(255,77,106,0.25);
+    background: var(--pill-blocked-bg);
+    color: var(--pill-blocked-color);
+    border: 1px solid var(--pill-blocked-border);
     padding: 2px 10px;
     border-radius: 9999px;
     font-size: 10px;
@@ -246,13 +473,32 @@
     letter-spacing: 0.05em;
   }
 
+  /* ═══ TEXT GRADIENT ═══ */
   .text-gradient {
-    background: linear-gradient(135deg, #7B6EFF, #3ECFCF);
+    background: var(--aegis-text-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
+  /* ═══ NOISE TEXTURE OVERLAY (subtle glass detail) ═══ */
+  .noise-texture {
+    position: relative;
+  }
+  .noise-texture::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+    opacity: 0.35;
+  }
+
+  /* ═══ CUSTOM SCROLLBAR VARIANT ═══ */
   .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
   }
@@ -260,15 +506,79 @@
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(123,110,255,0.15);
+    background: var(--scrollbar-accent-thumb);
     border-radius: 2px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(123,110,255,0.3);
+    background: var(--scrollbar-accent-thumb-hover);
   }
+
+  /* ═══ SEMANTIC UTILITY CLASSES ═══ */
+  .text-aegis {
+    color: var(--aegis-text);
+  }
+  .text-aegis-secondary {
+    color: var(--aegis-text-secondary);
+  }
+  .text-aegis-muted {
+    color: var(--aegis-text-muted);
+  }
+  .text-aegis-dim {
+    color: var(--aegis-text-dim);
+  }
+  .bg-aegis {
+    background-color: var(--aegis-bg);
+  }
+  .bg-aegis-surface {
+    background-color: var(--aegis-surface);
+  }
+  .border-aegis {
+    border-color: var(--aegis-border);
+  }
+  .border-aegis-hover {
+    border-color: var(--aegis-border-hover);
+  }
+
+  /* ═══ THEME TOGGLE BUTTON ═══ */
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    border: 1px solid var(--aegis-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    color: var(--aegis-text-muted);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .theme-toggle:hover {
+    border-color: var(--aegis-border-hover);
+    color: var(--aegis-primary);
+    background: var(--aegis-surface-hover);
+  }
+  .theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .theme-toggle:hover svg {
+    transform: rotate(15deg);
+  }
+
+  /* ═══ THEME TOGGLE ICON CLASSES ═══ */
+  [data-theme="dark"] .theme-icon-dark { display: block; }
+  [data-theme="dark"] .theme-icon-light { display: none; }
+  [data-theme="light"] .theme-icon-dark { display: none; }
+  [data-theme="light"] .theme-icon-light { display: block; }
 }
 
-/* ═══ ANIMATIONS ═══ */
+/* ═══════════════════════════════════════════════
+   KEYFRAME ANIMATIONS (all preserved exactly)
+   ═══════════════════════════════════════════════ */
 @keyframes slowPan {
   0% { transform: translateY(0); }
   100% { transform: translateY(100px); }
@@ -317,4 +627,41 @@
 
 .animate-border {
   animation: border-rotate 4s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════
+   LIGHT-MODE SPECIFIC OVERRIDES
+   (placed outside @layer for correct specificity)
+   ═══════════════════════════════════════════════ */
+
+/* Light mode: adjust glow effects to be subtle, not neon */
+[data-theme="light"] .glow-cyan {
+  box-shadow: 0 0 12px rgba(79, 70, 229, 0.15);
+}
+[data-theme="light"] .glow-cyan-text {
+  text-shadow: none;
+}
+[data-theme="light"] .glow-red {
+  box-shadow: 0 0 16px rgba(220, 38, 38, 0.15);
+}
+[data-theme="light"] .glow-pulse-btn {
+  animation: glowPulseBtnLight 3s ease-in-out infinite;
+}
+[data-theme="light"] .hero-gradient {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    transparent 0%,
+    rgba(240, 244, 255, 0.4) 40%,
+    rgba(240, 244, 255, 0.85) 70%,
+    rgb(240, 244, 255) 100%
+  );
+}
+
+@keyframes glowPulseBtnLight {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(79, 70, 229, 0.12), 0 1px 4px rgba(0,0,0,0.06);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(79, 70, 229, 0.20), 0 2px 8px rgba(0,0,0,0.08);
+  }
 }

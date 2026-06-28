@@ -40,11 +40,11 @@ export function AnalyticsView({
   }, [toolCalls]);
 
   const threatColors: Record<string, string> = {
-    'Prompt Injection': '#7B6EFF',
-    'Path Traversal': '#FFB347',
-    'Command Injection': '#FF4D6A',
-    'Recon Attempt': '#3ECFCF',
-    Safe: '#34D399',
+    'Prompt Injection': 'var(--aegis-primary)',
+    'Path Traversal': 'var(--aegis-warning)',
+    'Command Injection': 'var(--aegis-danger)',
+    'Recon Attempt': 'var(--tone-cyan)',
+    Safe: 'var(--aegis-success)',
   };
   const totalThreats = Object.values(threatDistribution).reduce((a, b) => a + b, 0) || 1;
 
@@ -336,8 +336,8 @@ export function AnalyticsView({
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <div className="lg:col-span-3 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-display text-lg font-semibold text-white">Threat analytics</h2>
-          <p className="text-[11px] text-white/40">Aggregated from {toolCalls.length} requests · {approvalRequests.length} reviews</p>
+          <h2 className="font-display text-lg font-semibold text-aegis">Threat analytics</h2>
+          <p className="text-[11px] text-aegis-muted">Aggregated from {toolCalls.length} requests · {approvalRequests.length} reviews</p>
         </div>
         <button
           onClick={handleExportReport}
@@ -358,10 +358,10 @@ export function AnalyticsView({
             return (
               <div key={name}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-white/60">{name}</span>
+                  <span className="text-xs text-aegis-secondary">{name}</span>
                   <span className="text-xs font-bold font-mono" style={{ color }}>{count} ({pct.toFixed(0)}%)</span>
                 </div>
-                <div className="h-2 bg-black/40 rounded-full overflow-hidden">
+                <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--aegis-border)' }}>
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${pct}%` }}
@@ -380,18 +380,18 @@ export function AnalyticsView({
         <Header title="Top offenders" sub="Blocks by agent" />
         <div className="mt-4 space-y-3">
           {agentActivity.length === 0 && (
-            <p className="text-xs text-white/20 text-center py-8">No agent activity yet</p>
+            <p className="text-xs text-aegis-dim text-center py-8">No agent activity yet</p>
           )}
           {agentActivity.slice(0, 6).map(([agent, data]) => {
             const dangerPct = data.total > 0 ? (data.blocked / data.total) * 100 : 0;
-            const barColor = dangerPct > 50 ? '#FF4D6A' : dangerPct > 20 ? '#FFB347' : '#34D399';
+            const barColor = dangerPct > 50 ? 'var(--aegis-danger)' : dangerPct > 20 ? 'var(--aegis-warning)' : 'var(--aegis-success)';
             return (
               <div key={agent} className="flex items-center gap-3">
-                <span className="text-xs text-white/70 font-mono w-24 truncate">{agent}</span>
-                <div className="flex-1 h-1.5 bg-black/40 rounded-full overflow-hidden">
+                <span className="text-xs text-aegis-muted font-mono w-24 truncate">{agent}</span>
+                <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--aegis-border)' }}>
                   <div className="h-full rounded-full" style={{ width: `${dangerPct}%`, backgroundColor: barColor }} />
                 </div>
-                <span className="text-[10px] font-mono text-white/40">{data.blocked}/{data.total}</span>
+                <span className="text-[10px] font-mono text-aegis-dim">{data.blocked}/{data.total}</span>
               </div>
             );
           })}
@@ -402,7 +402,7 @@ export function AnalyticsView({
       <GlassPanel className="lg:col-span-3 p-5">
         <Header title="Traffic timeline" sub="Recent activity" />
         {timelineData.length === 0 ? (
-          <p className="text-xs text-white/20 text-center py-8">No timeline data yet</p>
+          <p className="text-xs text-aegis-dim text-center py-8">No timeline data yet</p>
         ) : (
           <div className="flex items-end gap-2 h-40 mt-4">
             {timelineData.map(([hour, data]) => {
@@ -418,16 +418,16 @@ export function AnalyticsView({
                   className="flex-1 rounded-t-md relative group cursor-pointer"
                   style={{
                     background: data.blocked > 0
-                      ? 'linear-gradient(to top, rgba(255,77,106,0.4), rgba(255,77,106,0.1))'
+                      ? 'linear-gradient(to top, var(--tone-rose-border), var(--tone-rose-bg))'
                       : data.flagged > 0
-                        ? 'linear-gradient(to top, rgba(255,179,71,0.4), rgba(255,179,71,0.1))'
-                        : 'linear-gradient(to top, rgba(52,211,153,0.4), rgba(52,211,153,0.1))',
+                        ? 'linear-gradient(to top, var(--tone-amber-border), var(--tone-amber-bg))'
+                        : 'linear-gradient(to top, var(--tone-emerald-border), var(--tone-emerald-bg))',
                   }}
                 >
-                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] font-mono text-white/30 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] font-mono text-aegis-muted opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                     {total}
                   </div>
-                  <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[8px] text-white/20 font-mono whitespace-nowrap">
+                  <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[8px] text-aegis-dim font-mono whitespace-nowrap">
                     {hour}
                   </div>
                 </motion.div>
@@ -436,9 +436,9 @@ export function AnalyticsView({
           </div>
         )}
         <div className="flex items-center justify-center gap-6 mt-10">
-          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded bg-[#34D399]/40" /><span className="text-[10px] text-white/30">Safe</span></div>
-          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded bg-[#FFB347]/40" /><span className="text-[10px] text-white/30">Flagged</span></div>
-          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded bg-[#FF4D6A]/40" /><span className="text-[10px] text-white/30">Blocked</span></div>
+          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded" style={{ background: 'var(--tone-emerald-border)' }} /><span className="text-[10px] text-aegis-dim">Safe</span></div>
+          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded" style={{ background: 'var(--tone-amber-border)' }} /><span className="text-[10px] text-aegis-dim">Flagged</span></div>
+          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded" style={{ background: 'var(--tone-rose-border)' }} /><span className="text-[10px] text-aegis-dim">Blocked</span></div>
         </div>
       </GlassPanel>
     </div>
@@ -448,8 +448,8 @@ export function AnalyticsView({
 function Header({ title, sub }: { title: string; sub?: string }) {
   return (
     <div className="flex items-baseline justify-between">
-      <h3 className="font-display text-base font-semibold text-white">{title}</h3>
-      {sub && <span className="text-[11px] uppercase tracking-[0.16em] text-white/40">{sub}</span>}
+      <h3 className="font-display text-base font-semibold text-aegis">{title}</h3>
+      {sub && <span className="text-[11px] uppercase tracking-[0.16em] text-aegis-muted">{sub}</span>}
     </div>
   );
 }

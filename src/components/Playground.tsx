@@ -121,8 +121,8 @@ export function Playground() {
       <GlassPanel className="p-5">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-display text-lg font-semibold text-white">Attack playground</h3>
-            <p className="text-xs text-white/50">Craft a request. Aegis decides.</p>
+            <h3 className="font-display text-lg font-semibold text-aegis">Attack playground</h3>
+            <p className="text-xs text-aegis-muted">Craft a request. Aegis decides.</p>
           </div>
           <Pill tone="cyan">POST /rpc</Pill>
         </div>
@@ -134,8 +134,8 @@ export function Playground() {
               onClick={() => { setBody(JSON.stringify(e.payload, null, 2)); setVerdict(null); }}
               className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-left text-xs transition ${
                 activeExploitIndex === i
-                  ? 'border-[#3ECFCF]/40 bg-[#3ECFCF]/5 text-white'
-                  : 'border-white/10 bg-white/[0.03] text-white/70 hover:border-[#3ECFCF]/40 hover:bg-[#3ECFCF]/5 hover:text-white'
+                  ? 'border-[var(--tone-cyan-border)] bg-[var(--tone-cyan-bg)] text-aegis'
+                  : 'border-aegis bg-transparent text-aegis-muted hover:border-[var(--tone-cyan-border)] hover:bg-[var(--tone-cyan-bg)] hover:text-aegis'
               }`}
             >
               <span>{e.icon}</span> {e.label}
@@ -143,10 +143,10 @@ export function Playground() {
           ))}
         </div>
 
-        <div className="mt-4 rounded-xl border border-white/10 bg-black/40 overflow-hidden">
-          <div className="flex items-center justify-between border-b border-white/10 px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-white/40">
+        <div className="mt-4 rounded-xl border border-aegis overflow-hidden" style={{ background: 'var(--aegis-code-bg)' }}>
+          <div className="flex items-center justify-between border-b border-aegis px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-aegis-muted">
             <span>request body</span>
-            <span className="font-mono text-[#3ECFCF]">JSON</span>
+            <span className="font-mono" style={{ color: 'var(--tone-cyan)' }}>JSON</span>
           </div>
           <div className="h-72">
             <Editor
@@ -180,17 +180,17 @@ export function Playground() {
         >
           ▶ {loading ? 'Routing through Aegis…' : 'Send request'}
         </button>
-        <p className="mt-2 text-[10px] text-white/30">
+        <p className="mt-2 text-[10px] text-aegis-dim">
           Identical payloads are suppressed for {DUPLICATE_COOLDOWN_MS / 1000}s to avoid flooding the live feed — change the command or wait to re-test.
         </p>
       </GlassPanel>
 
       <GlassPanel className="p-5">
-        <h3 className="font-display text-sm font-semibold text-white">Verdict</h3>
+        <h3 className="font-display text-sm font-semibold text-aegis">Verdict</h3>
         <div className="mt-3 min-h-[16rem]">
           <AnimatePresence mode="wait">
             {!verdict || !verdictDisplay ? (
-              <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid h-64 place-items-center text-center text-xs text-white/40">
+              <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid h-64 place-items-center text-center text-xs text-aegis-muted">
                 {loading ? 'Awaiting Aegis decision…' : 'Send a request to see the verdict.'}
               </motion.div>
             ) : (
@@ -208,27 +208,27 @@ export function Playground() {
 
                 {typeof verdict.riskScore === 'number' && (
                   <div className="flex items-center gap-3">
-                    <div className="flex-1 h-1.5 bg-black/40 rounded-full overflow-hidden">
+                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--aegis-border)' }}>
                       <div
                         className="h-full rounded-full"
                         style={{ width: `${verdict.riskScore * 100}%`, background: verdictDisplay.color }}
                       />
                     </div>
-                    <span className="font-mono text-[11px] tabular-nums text-white/60">
+                    <span className="font-mono text-[11px] tabular-nums text-aegis-muted">
                       {(verdict.riskScore * 100).toFixed(0)}
                     </span>
                   </div>
                 )}
 
                 {verdict.threatReason && (
-                  <div className="text-xs text-white/60">
-                    <span className="text-white/40">reason: </span>
+                  <div className="text-xs text-aegis-muted">
+                    <span className="text-aegis-dim">reason: </span>
                     {verdict.threatReason}
                   </div>
                 )}
 
-                <div className="rounded-lg border border-white/10 bg-black/30 p-3 text-xs">
-                  <pre className="overflow-x-auto whitespace-pre-wrap break-words font-mono text-[11px] text-white/70">
+                <div className="rounded-lg border border-aegis p-3 text-xs" style={{ background: 'var(--aegis-code-bg)' }}>
+                  <pre className="overflow-x-auto whitespace-pre-wrap break-words font-mono text-[11px] text-aegis-muted">
                     {JSON.stringify(verdict.raw, null, 2)}
                   </pre>
                 </div>

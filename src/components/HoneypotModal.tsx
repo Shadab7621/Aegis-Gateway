@@ -50,7 +50,7 @@ export function HoneypotModal({
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 backdrop-blur-md"
-      style={{ backgroundColor: 'rgba(6,6,15,0.85)' }}
+      style={{ backgroundColor: 'var(--aegis-header-bg)' }}
       onClick={onClose}
     >
       <motion.div
@@ -62,23 +62,26 @@ export function HoneypotModal({
         // tall content (Attacker View / Difference tabs) it overflowed past the viewport with
         // no way to reach the rest. Now it's capped at 90vh and only the body scrolls — header,
         // tabs, and footer stay fixed in place.
-        className="glass-strong w-full max-w-4xl rounded-2xl text-white flex flex-col"
-        style={{ maxHeight: '90vh' }}
+        className="glass-strong w-full max-w-4xl rounded-2xl flex flex-col"
+        style={{ maxHeight: '90vh', color: 'var(--aegis-text)' }}
         onClick={e => e.stopPropagation()}
       >
         {/* Header — fixed */}
-        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4 shrink-0">
+        <div className="flex items-center justify-between border-b border-aegis px-5 py-4 shrink-0">
           <div className="min-w-0">
-            <h2 className="font-display text-base font-semibold tracking-wide" style={{ color: '#F0F0FA', textShadow: '0 1px 2px rgba(0,0,0,0.4)' }}>
+            <h2 className="font-display text-base font-semibold tracking-wide text-aegis">
               Honeypot intelligence
             </h2>
-            <p className="mt-1 font-mono text-[11px] text-white/40 truncate">
+            <p className="mt-1 font-mono text-[11px] text-aegis-muted truncate">
               {call.agent_id} · {call.id}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-white/40 hover:bg-white/5 hover:text-white text-sm shrink-0"
+            className="rounded-lg p-2 text-aegis-muted hover:text-aegis text-sm shrink-0"
+            style={{ transition: 'background 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--aegis-surface)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             aria-label="Close"
           >
             ✕
@@ -86,14 +89,14 @@ export function HoneypotModal({
         </div>
 
         {/* Tabs — fixed */}
-        <div className="flex border-b border-white/10 shrink-0">
+        <div className="flex border-b border-aegis shrink-0">
           {TABS.map(t => {
             const active = tab === t.key;
             return (
               <button
                 key={t.key}
                 onClick={() => setTab(t.key)}
-                className={`relative flex-1 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] transition ${active ? 'text-white' : 'text-white/40 hover:text-white/70'}`}
+                className={`relative flex-1 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] transition ${active ? 'text-aegis' : 'text-aegis-muted hover:text-aegis-secondary'}`}
               >
                 <span className="flex items-center justify-center gap-2">
                   <span>{t.icon}</span>
@@ -114,7 +117,7 @@ export function HoneypotModal({
           <AnimatePresence mode="wait">
             {tab === 'attacker' && (
               <motion.div key="a" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }} className="space-y-4">
-                <p className="text-xs text-white/50">
+                <p className="text-xs text-aegis-muted">
                   Decoy response the attacker will receive — designed to waste their time and gather intelligence.
                 </p>
                 <CodeBlock tone="rose" label="Decoy response · attacker sees this" json={decoy} />
@@ -128,16 +131,16 @@ export function HoneypotModal({
 
             {tab === 'real' && (
               <motion.div key="r" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }} className="space-y-4">
-                <p className="text-xs text-white/50">
+                <p className="text-xs text-aegis-muted">
                   Actual intercepted payload — what the attacker really sent.
                 </p>
                 <CodeBlock tone="cyan" label="Real payload · classified" json={real} />
                 {(real as any).threat_reason && (
-                  <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-                    <div className="mb-2 text-[10px] uppercase tracking-[0.16em] text-white/40">Threat breakdown</div>
+                  <div className="rounded-xl border border-aegis p-4" style={{ background: 'var(--aegis-surface)' }}>
+                    <div className="mb-2 text-[10px] uppercase tracking-[0.16em] text-aegis-muted">Threat breakdown</div>
                     {String((real as any).threat_reason).split(' + ').map((r, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs text-white/70">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#FF4D6A] shrink-0" />
+                      <div key={i} className="flex items-center gap-2 text-xs text-aegis-secondary">
+                        <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: 'var(--aegis-danger)' }} />
                         <span className="break-words">{r}</span>
                       </div>
                     ))}
@@ -148,20 +151,20 @@ export function HoneypotModal({
 
             {tab === 'diff' && (
               <motion.div key="d" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }}>
-                <p className="mb-4 text-xs text-white/50">
+                <p className="mb-4 text-xs text-aegis-muted">
                   Side-by-side comparison of real payload vs decoy.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <DiffCol tone="cyan" label="Real" keys={allKeys} a={real} b={decoy} side="a" />
                   <DiffCol tone="rose" label="Attacker sees" keys={allKeys} a={real} b={decoy} side="b" />
                 </div>
-                <div className="mt-3 flex items-center gap-4 text-[10px] text-white/40">
+                <div className="mt-3 flex items-center gap-4 text-[10px] text-aegis-dim">
                   <span className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded border border-[#FFB347]/40 bg-[#FFB347]/20 shrink-0" />
+                    <span className="h-2 w-2 rounded border shrink-0" style={{ borderColor: 'var(--tone-amber-border)', background: 'var(--tone-amber-bg)' }} />
                     differs
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded bg-white/5 shrink-0" />
+                    <span className="h-2 w-2 rounded shrink-0" style={{ background: 'var(--aegis-surface)' }} />
                     identical
                   </span>
                 </div>
@@ -171,12 +174,18 @@ export function HoneypotModal({
         </div>
 
         {/* Footer — fixed */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-white/10 bg-black/20 px-5 py-4 shrink-0">
-          <p className="font-mono text-[10px] text-white/30">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-aegis px-5 py-4 shrink-0" style={{ background: 'var(--aegis-code-bg)' }}>
+          <p className="font-mono text-[10px] text-aegis-dim">
             Honeypot active · attacker traffic will be redirected to decoy
           </p>
           <div className="flex gap-2 shrink-0">
-            <button onClick={onClose} className="rounded-lg border border-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white/60 hover:bg-white/5">
+            <button
+              onClick={onClose}
+              className="rounded-lg border border-aegis px-4 py-2 text-xs font-semibold uppercase tracking-wider text-aegis-muted"
+              style={{ transition: 'background 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--aegis-surface)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
               Cancel
             </button>
             <button
@@ -197,14 +206,14 @@ export function HoneypotModal({
 }
 
 function CodeBlock({ tone, label, json }: { tone: 'rose' | 'cyan'; label: string; json: unknown }) {
-  const color = tone === 'rose' ? '#FF4D6A' : '#3ECFCF';
+  const color = tone === 'rose' ? 'var(--tone-rose)' : 'var(--tone-cyan)';
   return (
-    <div className="overflow-hidden rounded-xl border bg-black/40" style={{ borderColor: `${color}40` }}>
-      <div className="flex items-center gap-2 border-b px-4 py-2" style={{ borderColor: `${color}33`, background: `${color}0F` }}>
+    <div className="overflow-hidden rounded-xl border" style={{ borderColor: 'var(--aegis-border)', background: 'var(--aegis-code-bg)' }}>
+      <div className="flex items-center gap-2 border-b px-4 py-2" style={{ borderColor: 'var(--aegis-border)', background: tone === 'rose' ? 'var(--tone-rose-bg)' : 'var(--tone-cyan-bg)' }}>
         <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: color }} />
         <span className="font-mono text-[10px] uppercase tracking-[0.16em] truncate" style={{ color }}>{label}</span>
       </div>
-      <pre className="overflow-x-auto max-h-64 overflow-y-auto custom-scrollbar p-4 font-mono text-[11px] leading-relaxed text-white/70 whitespace-pre-wrap break-words">
+      <pre className="overflow-x-auto max-h-64 overflow-y-auto custom-scrollbar p-4 font-mono text-[11px] leading-relaxed text-aegis-secondary whitespace-pre-wrap break-words">
         {JSON.stringify(json, null, 2)}
       </pre>
     </div>
@@ -213,8 +222,8 @@ function CodeBlock({ tone, label, json }: { tone: 'rose' | 'cyan'; label: string
 
 function Stat({ label, value, tone }: { label: string; value: string; tone: 'rose' | 'amber' | 'emerald' }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3 text-center">
-      <div className="text-[10px] uppercase tracking-[0.14em] text-white/40">{label}</div>
+    <div className="rounded-xl border border-aegis p-3 text-center" style={{ background: 'var(--aegis-surface)' }}>
+      <div className="text-[10px] uppercase tracking-[0.14em] text-aegis-muted">{label}</div>
       <div className="mt-1"><Pill tone={tone}>{value}</Pill></div>
     </div>
   );
@@ -226,19 +235,23 @@ function DiffCol({
   tone: 'cyan' | 'rose'; label: string; keys: string[];
   a: Record<string, unknown>; b: Record<string, unknown>; side: 'a' | 'b';
 }) {
-  const color = tone === 'rose' ? '#FF4D6A' : '#3ECFCF';
+  const color = tone === 'rose' ? 'var(--tone-rose)' : 'var(--tone-cyan)';
+  const bgHeader = tone === 'rose' ? 'var(--tone-rose-bg)' : 'var(--tone-cyan-bg)';
   const src = side === 'a' ? a : b;
   return (
-    <div className="overflow-hidden rounded-xl border bg-black/40" style={{ borderColor: `${color}40` }}>
-      <div className="border-b px-4 py-2" style={{ borderColor: `${color}33`, background: `${color}0F` }}>
+    <div className="overflow-hidden rounded-xl border" style={{ borderColor: 'var(--aegis-border)', background: 'var(--aegis-code-bg)' }}>
+      <div className="border-b px-4 py-2" style={{ borderColor: 'var(--aegis-border)', background: bgHeader }}>
         <span className="font-mono text-[10px] uppercase tracking-[0.16em]" style={{ color }}>{label}</span>
       </div>
       <div className="space-y-1.5 p-3 max-h-64 overflow-y-auto custom-scrollbar">
         {keys.filter(k => src[k] !== undefined).map(k => {
           const differs = JSON.stringify(a[k]) !== JSON.stringify(b[k]);
           return (
-            <div key={k} className={`rounded p-2 font-mono text-[11px] break-words ${differs ? 'border border-[#FFB347]/30 bg-[#FFB347]/10' : 'bg-white/[0.02]'}`}>
-              <span className="text-white/40">{k}: </span>
+            <div key={k} className="rounded p-2 font-mono text-[11px] break-words" style={{ 
+              background: differs ? 'var(--tone-amber-bg)' : 'var(--aegis-surface)',
+              border: differs ? '1px solid var(--tone-amber-border)' : '1px solid transparent'
+            }}>
+              <span className="text-aegis-muted">{k}: </span>
               <span style={{ color }}>{JSON.stringify(src[k])}</span>
             </div>
           );
