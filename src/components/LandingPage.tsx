@@ -299,6 +299,14 @@ export default function LandingPage({ onEnterDashboard }: { onEnterDashboard: ()
             <div className="w-1 h-2 rounded-full" style={{ background: 'var(--aegis-secondary)', opacity: 0.6 }} />
           </motion.div>
         </motion.div>
+
+        {/* Bottom fade transition to body background */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10"
+          style={{
+            background: 'linear-gradient(to bottom, transparent, var(--aegis-bg))'
+          }}
+        />
       </section>
 
       {/* ═══════════════ THREAT MARQUEE ═══════════════ */}
